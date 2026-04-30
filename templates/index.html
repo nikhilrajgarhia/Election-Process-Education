@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Election Process Assistant</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <h1>Election Process Assistant</h1>
+          <p>Build a personal voting plan with clear steps and official source links.</p>
+        </div>
+      </div>
+
+      <label>
+        Location
+        <select id="jurisdiction">
+          <option value="us">United States</option>
+          <option value="india">India</option>
+          <option value="uk">United Kingdom</option>
+        </select>
+      </label>
+
+      <label>
+        Voter profile
+        <select id="persona">
+          <option value="first-time">First-time voter</option>
+          <option value="returning">Returning voter</option>
+          <option value="mail">Mail, postal, or absentee voter</option>
+          <option value="overseas">Overseas or away-from-home voter</option>
+          <option value="student">Student or recently moved voter</option>
+        </select>
+      </label>
+
+      <label>
+        Preferred voting method
+        <select id="method">
+          <option value="in-person">In person</option>
+          <option value="early">Early in person</option>
+          <option value="mail">Mail, postal, or absentee</option>
+          <option value="proxy">Proxy, where available</option>
+        </select>
+      </label>
+
+      <div class="checklist" id="completed"></div>
+      <button id="reset" class="secondary" type="button">Reset checklist</button>
+    </aside>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h2>Your voting process, broken into next steps</h2>
+          <p>Choose a location and voter profile to see what to do first, what deadlines to verify, and where to confirm official rules.</p>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="panel">
+          <h2 id="plan-title">Personal timeline</h2>
+          <p id="plan-summary"></p>
+          <div id="source" class="source"></div>
+          <div class="timeline" id="timeline"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Ask the assistant</h2>
+          <p>Ask about registration, deadlines, ID, voting methods, polling places, or results.</p>
+          <div class="chat-log" id="chat-log"></div>
+          <div class="quick">
+            <button type="button" data-question="What should I do first?">First step</button>
+            <button type="button" data-question="How do deadlines work?">Deadlines</button>
+            <button type="button" data-question="What ID or documents might I need?">ID rules</button>
+            <button type="button" data-question="How are votes counted?">Counting</button>
+          </div>
+          <form class="chat-row" id="chat-form">
+            <input id="question" placeholder="Type a question..." autocomplete="off">
+            <button type="submit">Ask</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Helpful reminders</h2>
+        <ul class="tips" id="tips"></ul>
+      </section>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
