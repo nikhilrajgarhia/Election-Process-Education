@@ -10,6 +10,10 @@ from pydantic import BaseModel
 from typing import List, Set, Optional
 
 from data import JURISDICTIONS, PERSONAS, FAQ
+from dotenv import load_dotenv
+
+# Load .env file for local development
+load_dotenv()
 
 app = FastAPI()
 

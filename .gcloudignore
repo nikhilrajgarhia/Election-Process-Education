@@ -1,0 +1,14 @@
+.gcloudignore
+.git
+.gitignore
+.env
+.python-version
+__pycache__/
+*.pyc
+
+# Ignore large system folders if they exist
+google-cloud-sdk/
+.install/
+bin/
+lib/
+platform/
