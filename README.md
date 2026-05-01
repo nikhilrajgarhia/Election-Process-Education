@@ -22,6 +22,24 @@ The application follows a **"Guide-First, AI-Enhanced"** philosophy:
 - **Connectivity**: Assumes a stable internet connection for AI interactions and Civic API lookups.
 - **US Coverage**: Real-time polling place lookup via the Civic Information API is primarily optimized for US-based addresses.
 
+## 🧩 Challenges & Resolutions
+
+### 1. Buildpack Detection Issues
+- **Challenge**: The deployment initially failed with a "Missing Entrypoint" error because Google Cloud Buildpacks couldn't identify the FastAPI starter file amidst other system files.
+- **Resolution**: Transitioned from a generic `--source .` deploy to a deterministic **`Dockerfile`** build using `gcloud builds submit`. This ensured the entrypoint was explicitly defined and the correct Python environment was used.
+
+### 2. Large Upload Payloads
+- **Challenge**: The local environment contained the Google Cloud SDK and other system binaries, causing the source upload to exceed 80MB and slow down the build.
+- **Resolution**: Implemented a strict **`.gcloudignore`** file to exclude system-level folders (`bin/`, `lib/`, `google-cloud-sdk/`), reducing the upload size to a few kilobytes.
+
+### 3. Starlette/FastAPI Compatibility
+- **Challenge**: The application encountered an "Internal Server Error" (500) on the root page due to a `TypeError: unhashable type: 'dict'`.
+- **Resolution**: Analyzed Cloud Run logs to identify a signature change in the Starlette `TemplateResponse` function. Corrected the argument order in `main.py` to pass the `request` object as the first parameter.
+
+### 4. Secret Management Security
+- **Challenge**: Storing API keys for Gemini and the Civic Information API posed a risk of accidental exposure on GitHub.
+- **Resolution**: Implemented **`python-dotenv`** for local development and leveraged **Cloud Run Environment Variables** for production. Secured these further with updated `.gitignore` and `.gcloudignore` rules.
+
 ---
 
 ## 🛠️ Tech Stack
