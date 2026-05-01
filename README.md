@@ -2,13 +2,25 @@
 
 The **Election Process Assistant** is an interactive, AI-powered tool designed to simplify the voting process. It helps users understand election timelines, registration steps, and polling requirements based on their specific jurisdiction, voter profile, and preferred voting method.
 
-## 🚀 Key Features
+## 🎯 Chosen Vertical
+**Civic Engagement & Election Education**: This solution addresses the "information gap" in democratic processes by translating complex, jurisdiction-specific election rules into actionable, personalized tasks.
 
-- **Dynamic Voter Plans**: Generates a step-by-step timeline tailored to your location (US, India, UK) and persona (First-time voter, Student, Overseas, etc.).
-- **AI-Powered Assistant**: Integrated with **Google Gemini 1.5 Flash** to answer natural language questions about the election process with context-aware accuracy.
-- **State Persistence**: Remembers your selected settings and checklist progress even after refreshing the page or closing the browser.
-- **Modern Architecture**: Refactored into a clean, modular structure using **FastAPI** for the backend and a responsive Vanilla JS/CSS frontend.
-- **Docker Ready**: Fully containerized and optimized for deployment on platforms like **Google Cloud Run**.
+## 🧠 Approach & Logic
+The application follows a **"Guide-First, AI-Enhanced"** philosophy:
+1.  **Guided Logic**: Uses a deterministic rule engine (`data.py`) to generate reliable timelines based on the user's location, persona, and voting method. This ensures that core legal requirements are always accurate.
+2.  **AI Fallback**: Integrates **Gemini 1.5 Flash** as a dynamic layer. If a user asks a question outside the predefined steps, the AI provides context-aware answers, citing official sources and the specific jurisdiction context.
+3.  **Real-Time Data**: Integrates the **Google Civic Information API** to supplement general guides with exact polling locations and ballot details for US addresses.
+
+## ⚙️ How it Works
+1.  **Onboarding**: The user selects their jurisdiction and voter profile (e.g., "Student" or "Overseas").
+2.  **Dynamic Timeline**: The system generates a custom checklist. For example, a student voting in the US sees specific steps for campus registration.
+3.  **Persistence**: Using `localStorage`, the app remembers the user's progress. A voter can mark steps as "Done" and return later to see the next task.
+4.  **AI Chat**: Users can ask natural language questions (e.g., "Do I need a passport to vote in India?"). The AI analyzes the `JURISDICTIONS` data and the user's current plan to provide a tailored response.
+
+## 📝 Assumptions Made
+- **Official Priority**: The app assumes that the "Official Source" links provided are the final authority for any legal or deadline-related disputes.
+- **Connectivity**: Assumes a stable internet connection for AI interactions and Civic API lookups.
+- **US Coverage**: Real-time polling place lookup via the Civic Information API is primarily optimized for US-based addresses.
 
 ---
 

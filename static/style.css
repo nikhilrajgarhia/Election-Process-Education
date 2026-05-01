@@ -97,6 +97,42 @@ select, input {
   background: #fff;
 }
 
+.search-box {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.search-box label {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.lookup-result {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.lookup-item {
+  background: #f0f7f4;
+  border: 1px solid #c9e2d7;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.lookup-item h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+  color: var(--green);
+}
+
+.lookup-item p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
 .checklist {
   display: grid;
   gap: 10px;

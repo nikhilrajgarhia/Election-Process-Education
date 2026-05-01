@@ -26,6 +26,15 @@
         </select>
       </label>
 
+      <div class="search-box">
+        <label for="address-input">Find Polling Places (US Only)</label>
+        <div class="chat-row">
+          <input id="address-input" placeholder="Enter your full address..." autocomplete="on">
+          <button id="lookup-btn" type="button">Search</button>
+        </div>
+        <div id="lookup-result" class="lookup-result"></div>
+      </div>
+
       <label>
         Voter profile
         <select id="persona">

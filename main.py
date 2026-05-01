@@ -1,5 +1,6 @@
 import os
 import json
+import httpx
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -17,6 +18,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Configure Gemini
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
+CIVIC_INFO_API_KEY = os.environ.get("CIVIC_INFO_API_KEY")
+
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
     model = genai.GenerativeModel("gemini-1.5-flash")
@@ -137,11 +140,35 @@ def answer_question_logic(payload: QuestionRequest):
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html")
 
 @app.post("/api/plan")
 async def get_plan(payload: PlanRequest):
     return build_plan_logic(payload)
+
+class LookupRequest(BaseModel):
+    address: str
+
+@app.post("/api/lookup")
+async def lookup_address(payload: LookupRequest):
+    if not CIVIC_INFO_API_KEY:
+        return {"error": "Civic Information API Key not configured."}
+    
+    url = "https://www.googleapis.com/civicinfo/v2/voterinfo"
+    params = {
+        "address": payload.address,
+        "key": CIVIC_INFO_API_KEY
+    }
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.get(url, params=params)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPStatusError as e:
+            return {"error": f"API Error: {e.response.status_code}", "details": e.response.text}
+        except Exception as e:
+            return {"error": f"Connection Error: {str(e)}"}
 
 @app.post("/api/ask")
 async def ask_assistant(payload: QuestionRequest):

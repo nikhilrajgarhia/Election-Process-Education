@@ -163,6 +163,58 @@ document.querySelectorAll(".quick button").forEach((button) => {
   button.addEventListener("click", () => ask(button.dataset.question));
 });
 
+// --- Address Lookup ---
+
+async function lookupAddress() {
+  const input = $("#address-input");
+  const resultDiv = $("#lookup-result");
+  const address = input.value.trim();
+  
+  if (!address) return;
+  
+  resultDiv.innerHTML = "<em>Searching for polling places...</em>";
+  
+  try {
+    const data = await postJson("/api/lookup", { address });
+    
+    if (data.error) {
+      resultDiv.innerHTML = `<div style="color: var(--red)">${data.error}</div>`;
+      return;
+    }
+    
+    let html = `<strong>Results for ${data.normalizedAddress.line1}:</strong><br><br>`;
+    
+    if (data.pollingLocations && data.pollingLocations.length > 0) {
+      data.pollingLocations.forEach(loc => {
+        html += `
+          <div class="lookup-item">
+            <h4>Polling Place: ${loc.address.locationName}</h4>
+            <p>${loc.address.line1}, ${loc.address.city}, ${loc.address.state}</p>
+            <p><small>Hours: ${loc.pollingHours || "Contact local office"}</small></p>
+          </div>
+        `;
+      });
+    } else {
+      html += "<p>No specific polling locations found for this address. Please check with your local election office.</p>";
+    }
+    
+    if (data.state && data.state[0].electionAdministrationBody) {
+      const body = data.state[0].electionAdministrationBody;
+      html += `<br><small>Source: <a href="${body.electionInfoUrl}" target="_blank">${body.name}</a></small>`;
+    }
+    
+    resultDiv.innerHTML = html;
+  } catch (e) {
+    resultDiv.innerHTML = `<div style="color: var(--red)">Failed to connect to lookup service.</div>`;
+    console.error(e);
+  }
+}
+
+const lookupBtn = $("#lookup-btn");
+if (lookupBtn) {
+  lookupBtn.addEventListener("click", lookupAddress);
+}
+
 // --- Initialization ---
 
 loadState();
